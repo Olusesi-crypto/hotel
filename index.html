@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Belmare — Positano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+    
+  <style>
+    /* ============ TOKENS ============ */
+    :root {
+      --ink: #0F1E1B;
+      --emerald: #173330;
+      --emerald-2: #1E3F3B;
+      --brass: #C6A15B;
+      --brass-bright: #E2C07E;
+      --ivory: #F4EFE1;
+      --ivory-dim: #DCD5C1;
+      --sage: #8AA399;
+      --rust: #A85C3B;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 2px;
+      --ease: cubic-bezier(.4, 0, .2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--brass);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--brass);
+      display: inline-block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    ::selection {
+      background: var(--brass);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--brass-bright);
+      outline-offset: 3px;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 64px);
+    }
+
+    /* duotone treatment for stock imagery to unify palette */
+    .photo {
+      position: relative;
+      overflow: hidden;
+      background: var(--emerald);
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(45%) sepia(12%) saturate(120%) brightness(0.9);
+      transform: scale(1.02);
+    }
+
+    .photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(15, 30, 27, 0.55), rgba(23, 51, 48, 0.15) 55%, rgba(198, 161, 91, 0.18));
+      mix-blend-mode: multiply;
+    }
+
+    /* ============ NAV ============ */
+    header.site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 22px 0;
+      background: linear-gradient(180deg, rgba(15, 30, 27, 0.85), rgba(15, 30, 27, 0));
+      transition: background 0.4s var(--ease), padding 0.4s var(--ease);
+    }
+
+    header.site-nav.scrolled {
+      background: rgba(15, 30, 27, 0.92);
+      padding: 14px 0;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(198, 161, 91, 0.15);
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand .mark {
+      color: var(--brass);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      color: var(--ivory-dim);
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px;
+      background: var(--brass);
+      transition: width 0.3s var(--ease);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      border: 1px solid var(--brass);
+      color: var(--brass-bright);
+      background: transparent;
+      padding: 10px 22px;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background 0.3s var(--ease), color 0.3s var(--ease);
+    }
+
+    .nav-cta:hover {
+      background: var(--brass);
+      color: var(--ink);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ivory);
+      font-size: 1.5rem;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 640px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero .photo {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding-bottom: 150px;
+    }
+
+    .hero-content .eyebrow {
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 6.5vw, 5.4rem);
+      line-height: 1.02;
+      max-width: 16ch;
+      color: var(--ivory);
+    }
+
+    .hero h1 em {
+      color: var(--brass-bright);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero-sub {
+      margin-top: 22px;
+      max-width: 46ch;
+      color: var(--ivory-dim);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      right: clamp(20px, 4vw, 64px);
+      bottom: 150px;
+      z-index: 2;
+      writing-mode: vertical-rl;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--ivory-dim);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scroll-cue .line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(var(--brass), transparent);
+    }
+
+    /* ============ FOLIO SEARCH CARD ============ */
+    .folio {
+      position: relative;
+      z-index: 5;
+      margin-top: -96px;
+      margin-bottom: 120px;
+    }
+
+    .folio-card {
+      background: var(--emerald);
+      border: 1px solid rgba(198, 161, 91, 0.35);
+      box-shadow: var(--shadow);
+      padding: 34px clamp(20px, 3vw, 44px);
+      position: relative;
+    }
+
+    .folio-card::before,
+    .folio-card::after {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid var(--brass);
+    }
+
+    .folio-card::before {
+      top: 10px;
+      left: 10px;
+      border-right: none;
+      border-bottom: none;
+    }
+
+    .folio-card::after {
+      bottom: 10px;
+      right: 10px;
+      border-left: none;
+      border-top: none;
+    }
+
+    .folio-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px dashed rgba(244, 239, 225, 0.25);
+      padding-bottom: 16px;
+      margin-bottom: 22px;
+    }
+
+    .folio-head .eyebrow::before {
+      display: none;
+    }
+
+    .folio-id {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--ivory-dim);
+      letter-spacing: 0.1em;
+    }
+
+    .folio-form {
+      display: grid;
+      grid-template-columns: 1.1fr 1.1fr 1fr 1fr auto;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage);
+    }
+
+    .field input,
+    .field select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(244, 239, 225, 0.3);
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      padding: 6px 2px;
+      transition: border-color 0.25s var(--ease);
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-bottom-color: var(--brass);
+      outline: none;
+    }
+
+    .field select option {
+      background: var(--emerald);
+      color: var(--ivory);
+    }
+
+    .field input::-webkit-calendar-picker-indicator {
+      filter: invert(0.8) sepia(1) saturate(2) hue-rotate(0deg);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--brass);
+      color: var(--ink);
+      border: none;
+      padding: 14px 30px;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: background 0.3s var(--ease), transform 0.2s var(--ease);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: var(--brass-bright);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .form-msg {
+      grid-column: 1 / -1;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--rust);
+      min-height: 1.2em;
+      margin-top: -4px;
+    }
+
+    .form-msg.ok {
+      color: var(--sage);
+    }
+
+    /* ============ SECTION SHELL ============ */
+    section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 3.4vw, 2.9rem);
+      margin-top: 14px;
+      max-width: 20ch;
+    }
+
+    .section-head p {
+      max-width: 38ch;
+      color: var(--ivory-dim);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+    }
+
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============ ROOMS ============ */
+    #results-note {
+      margin-bottom: 32px;
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 36px;
+    }
+
+    .room-card {
+      background: var(--emerald);
+      border: 1px solid rgba(198, 161, 91, 0.14);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-card .photo {
+      height: 260px;
+    }
+
+    .room-body {
+      padding: 26px 28px 28px;
+    }
+
+    .room-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .room-top h3 {
+      font-size: 1.35rem;
+    }
+
+    .room-price {
+      text-align: right;
+      font-family: 'IBM Plex Mono', monospace;
+      white-space: nowrap;
+    }
+
+    .room-price .amount {
+      color: var(--brass-bright);
+      font-size: 1.15rem;
+    }
+
+    .room-price .per {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--sage);
+      letter-spacing: 0.08em;
+    }
+
+    .room-tags {
+      display: flex;
+      gap: 18px;
+      margin: 14px 0 18px;
+      color: var(--ivory-dim);
+      font-size: 0.82rem;
+    }
+
+    .room-tags span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .room-tags svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--brass);
+    }
+
+    .room-desc {
+      color: var(--ivory-dim);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .room-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-ghost {
+      background: none;
+      border: 1px solid var(--brass);
+      color: var(--brass-bright);
+      padding: 11px 22px;
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.3s var(--ease), color 0.3s var(--ease);
+    }
+
+    .btn-ghost:hover {
+      background: var(--brass);
+      color: var(--ink);
+    }
+
+    .room-avail {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--sage);
+    }
+
+    .room-avail.sold {
+      color: var(--rust);
+    }
+
+    /* ============ AMENITIES ============ */
+    .amenities-wrap {
+      background: var(--emerald-2);
+    }
+
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(198, 161, 91, 0.15);
+      border: 1px solid rgba(198, 161, 91, 0.15);
+    }
+
+    .amenity {
+      background: var(--emerald-2);
+      padding: 38px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .amenity .icon-badge {
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--brass);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .amenity svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--brass-bright);
+    }
+
+    .amenity h3 {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+
+    .amenity p {
+      color: var(--ivory-dim);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ============ DINING SPLIT ============ */
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 0;
+    }
+
+    .split .photo {
+      height: 560px;
+    }
+
+    .split-copy {
+      padding: 0 clamp(24px, 5vw, 80px);
+    }
+
+    .split-copy p {
+      color: var(--ivory-dim);
+      line-height: 1.75;
+      font-size: 1rem;
+      margin: 20px 0 28px;
+    }
+
+    .split-copy .stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 36px;
+    }
+
+    .stat b {
+      font-family: 'Fraunces', serif;
+      font-size: 1.8rem;
+      color: var(--brass-bright);
+      display: block;
+    }
+
+    .stat span {
+      font-size: 0.75rem;
+      color: var(--sage);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============ TESTIMONIALS ============ */
+    .testi-wrap {
+      background: var(--ink);
+      border-top: 1px solid rgba(198, 161, 91, 0.15);
+      border-bottom: 1px solid rgba(198, 161, 91, 0.15);
+      text-align: center;
+    }
+
+    .testi-quote {
+      font-size: 0.9rem;
+    }
+
+    .quote-mark {
+      font-family: 'Fraunces', serif;
+      font-size: 4rem;
+      color: var(--brass);
+      font-style: italic;
+      line-height: 1;
+    }
+
+    .testi-slide {
+      max-width: 760px;
+      margin: 0 auto;
+      min-height: 180px;
+    }
+
+    .testi-slide p.quote {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      line-height: 1.5;
+      color: var(--ivory);
+    }
+
+    .testi-name {
+      margin-top: 26px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--sage);
+      letter-spacing: 0.06em;
+    }
+
+    .testi-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 34px;
+    }
+
+    .testi-dots button {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1px solid var(--brass);
+      background: none;
+      padding: 0;
+    }
+
+    .testi-dots button.active {
+      background: var(--brass);
+    }
+
+    /* ============ LOCATION ============ */
+    .location-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .location-map {
+      height: 420px;
+      position: relative;
+      background: var(--emerald);
+      border: 1px solid rgba(198, 161, 91, 0.2);
+      overflow: hidden;
+    }
+
+    .location-map svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .location-list {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .location-list li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      color: var(--ivory-dim);
+      font-size: 0.92rem;
+    }
+
+    .location-list svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--brass);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      background: var(--emerald-2);
+      padding: 80px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    .footer-grid h4 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brass);
+      margin-bottom: 20px;
+    }
+
+    .footer-grid ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-grid a,
+    .footer-grid p {
+      color: var(--ivory-dim);
+      font-size: 0.88rem;
+    }
+
+    .footer-brand p {
+      margin: 16px 0 22px;
+      line-height: 1.6;
+      max-width: 32ch;
+    }
+
+    .newsletter {
+      display: flex;
+      border-bottom: 1px solid rgba(244, 239, 225, 0.3);
+      padding-bottom: 10px;
+    }
+
+    .newsletter input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--ivory);
+      font-size: 0.88rem;
+    }
+
+    .newsletter button {
+      background: none;
+      border: none;
+      color: var(--brass-bright);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 26px;
+      border-top: 1px solid rgba(244, 239, 225, 0.1);
+      font-size: 0.75rem;
+      color: var(--sage);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ============ MODAL / BOOKING FLOW ============ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(8, 16, 14, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease);
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: var(--emerald);
+      border: 1px solid rgba(198, 161, 91, 0.3);
+      max-width: 640px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow);
+      transform: translateY(20px);
+      transition: transform 0.35s var(--ease);
+    }
+
+    .modal-overlay.open .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 30px;
+      border-bottom: 1px solid rgba(198, 161, 91, 0.2);
+      position: sticky;
+      top: 0;
+      background: var(--emerald);
+      z-index: 2;
+    }
+
+    .modal-head h3 {
+      font-size: 1.15rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--ivory-dim);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .modal-steps {
+      display: flex;
+      gap: 6px;
+      padding: 18px 30px 0;
+    }
+
+    .modal-steps span {
+      flex: 1;
+      height: 2px;
+      background: rgba(244, 239, 225, 0.15);
+    }
+
+    .modal-steps span.done {
+      background: var(--brass);
+    }
+
+    .modal-body {
+      padding: 26px 30px 34px;
+    }
+
+    .modal-body h4 {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .modal-body .muted {
+      color: var(--ivory-dim);
+      font-size: 0.85rem;
+      margin-bottom: 22px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-row .field input,
+    .form-row .field select,
+    .form-row .field textarea {
+      background: rgba(244, 239, 225, 0.04);
+      border: 1px solid rgba(244, 239, 225, 0.2);
+      padding: 11px 12px;
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .form-row .field textarea {
+      resize: vertical;
+      min-height: 70px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab-row {
+      display: flex;
+      gap: 0;
+      margin-bottom: 22px;
+      border-bottom: 1px solid rgba(244, 239, 225, 0.15);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--ivory-dim);
+      padding: 10px 18px 14px;
+      font-size: 0.85rem;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: var(--brass-bright);
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 2px;
+      background: var(--brass);
+    }
+
+    .summary-box {
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(198, 161, 91, 0.2);
+      padding: 18px 20px;
+      margin: 20px 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      color: var(--ivory-dim);
+    }
+
+    .summary-row.total {
+      border-top: 1px dashed rgba(244, 239, 225, 0.25);
+      margin-top: 8px;
+      padding-top: 12px;
+      color: var(--brass-bright);
+      font-size: 0.95rem;
+    }
+
+    .pay-methods {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .pay-method {
+      border: 1px solid rgba(244, 239, 225, 0.2);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--ivory-dim);
+      cursor: pointer;
+      transition: border-color 0.25s var(--ease);
+    }
+
+    .pay-method.active {
+      border-color: var(--brass);
+      color: var(--ivory);
+    }
+
+    .pay-method svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--brass);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 26px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--ivory-dim);
+      font-size: 0.85rem;
+    }
+
+    .link-btn:hover {
+      color: var(--ivory);
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(15, 20, 17, 0.3);
+      border-top-color: var(--ink);
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: -3px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .confirm-badge {
+      width: 64px;
+      height: 64px;
+      border: 1px solid var(--brass);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+    }
+
+    .confirm-badge svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--brass-bright);
+    }
+
+    .confirm-ref {
+      text-align: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.3rem;
+      color: var(--brass-bright);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .field-error {
+      color: var(--rust);
+      font-size: 0.72rem;
+      margin-top: -12px;
+      margin-bottom: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 980px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .folio-form {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .folio-form .btn-primary {
+        grid-column: 1/-1;
+      }
+
+      .rooms-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .amenities-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .split .photo {
+        height: 340px;
+      }
+
+      .split-copy {
+        padding: 48px clamp(20px, 4vw, 64px);
+      }
+
+      .location-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .amenities-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        padding-bottom: 180px;
+      }
+
+      .scroll-cue {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="site-nav" id="siteNav">
+    <div class="wrap nav-row">
+      <a href="#top" class="brand"><span class="mark">B</span>Hotel Belmare</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#rooms">Rooms</a></li>
+          <li><a href="#dining">Dining</a></li>
+          <li><a href="#amenities">Amenities</a></li>
+          <li><a href="#location">Location</a></li>
+        </ul>
+      </nav>
+      <button class="nav-cta"
+        onclick="document.getElementById('folio').scrollIntoView({behavior:'smooth'})">Reserve</button>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <div id="top" class="hero">
+    <div class="photo">
+      <img src="images/Beachfront%20hotel.jfif"
+        alt="Hotel Belmare terrace overlooking the Tyrrhenian coast at dusk">
+    </div>
+    <div class="wrap hero-content">
+      <p class="eyebrow">Est. 1962 · Positano, Italy</p>
+      <h1>Where the coastline<br>writes the <em>itinerary.</em></h1>
+      <p class="hero-sub">Forty-two rooms carved into the cliffside, a kitchen built around the morning catch, and a
+        terrace that has kept guests silent since 1962.</p>
+    </div>
+    <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+  </div>
+
+  <!-- ============ FOLIO SEARCH ============ -->
+  <div class="wrap">
+    <div class="folio" id="folio">
+      <div class="folio-card reveal">
+        <div class="folio-head">
+          <p class="eyebrow">Reservation Folio</p>
+          <p class="folio-id">No. 0142 — Belmare Front Desk</p>
+        </div>
+        <form class="folio-form" id="searchForm" novalidate>
+          <div class="field">
+            <label for="checkin">Check-in</label>
+            <input type="date" id="checkin" required>
+          </div>
+          <div class="field">
+            <label for="checkout">Check-out</label>
+            <input type="date" id="checkout" required>
+          </div>
+          <div class="field">
+            <label for="adults">Guests</label>
+            <select id="adults">
+              <option value="1">1 adult</option>
+              <option value="2" selected>2 adults</option>
+              <option value="3">3 adults</option>
+              <option value="4">4 adults</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="roomType">Room type</label>
+            <select id="roomType">
+              <option value="">Any room</option>
+              <option value="Classic Double">Classic Double</option>
+              <option value="Garden Junior Suite">Garden Junior Suite</option>
+              <option value="Terrace Suite">Terrace Suite</option>
+              <option value="Grand Belmare Suite">Grand Belmare Suite</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary">Check availability</button>
+          <p class="form-msg" id="formMsg"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ROOMS ============ -->
+  <section id="rooms" class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <p class="eyebrow">Accommodations</p>
+        <h2>Four rooms.<br>One coastline.</h2>
+      </div>
+      <p>Every room faces the water. What changes is how much of it — and how far the terrace runs.</p>
+    </div>
+    <p id="results-note" class="form-msg ok" style="display:none;"></p>
+    <div class="rooms-grid" id="roomsGrid"></div>
+  </section>
+
+  <!-- ============ AMENITIES ============ -->
+  <div class="amenities-wrap" id="amenities">
+    <section class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">In-house</p>
+          <h2>The quiet essentials.</h2>
+        </div>
+        <p>Nothing that needs announcing twice — just handled, consistently, by people who live here.</p>
+      </div>
+      <div class="amenities-grid reveal" id="amenitiesGrid"></div>
+    </section>
+  </div>
+
+  <!-- ============ DINING SPLIT ============ -->
+  <section id="dining" style="padding:0;">
+    <div class="split">
+      <div class="photo reveal">
+        <img src="https://picsum.photos/seed/belmare-dining/1000/1200"
+          alt="Terrace dining room at Hotel Belmare with sea view">
+      </div>
+      <div class="split-copy reveal">
+        <p class="eyebrow">Dining</p>
+        <h2>Tavola Belmare</h2>
+        <p>Breakfast is whatever the boats brought in that morning. Dinner is six tables, one seating, and a wine list
+          built entirely from vineyards you can see from the terrace. Reservations are made at check-in, not before.</p>
+        <div class="stats">
+          <div class="stat"><b>06:30–23:00</b><span>Kitchen hours</span></div>
+          <div class="stat"><b>6</b><span>Tables, one seating</span></div>
+          <div class="stat"><b>1962</b><span>Cellar founded</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <div class="testi-wrap">
+    <section class="wrap">
+      <div class="testi-slide reveal" id="testiSlide">
+        <div class="quote-mark">“</div>
+        <p class="quote" id="testiQuote"></p>
+        <p class="testi-name" id="testiName"></p>
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
+    </section>
+  </div>
+
+  <!-- ============ LOCATION ============ -->
+  <section id="location" class="wrap">
+    <div class="location-grid">
+      <div class="reveal">
+        <p class="eyebrow">Location</p>
+        <h2 style="margin-top:14px;">Via Cristoforo<br>Colombo, 22</h2>
+        <ul class="location-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+              <path d="M12 21s-7-7.2-7-12a7 7 0 0 1 14 0c0 4.8-7 12-7 12Z" />
+              <circle cx="12" cy="9" r="2.5" />
+            </svg>12 minutes from Positano's main dock by private launch.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+              <path d="M12 8v5l3 2" />
+              <circle cx="12" cy="12" r="9" />
+            </svg>Front desk staffed around the clock, every day of the year.</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+              <path
+                d="M22 16.92V21a1 1 0 0 1-1.1 1 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 3.2 3.1 1 1 0 0 1 4.2 2h4.1a1 1 0 0 1 1 .86c.12.9.33 1.78.63 2.62a1 1 0 0 1-.23 1.05L8.1 8.1a16 16 0 0 0 6 6l1.57-1.56a1 1 0 0 1 1.05-.23c.84.3 1.72.51 2.62.63a1 1 0 0 1 .86 1.02Z" />
+            </svg>+234 70 4126 1992 — reachable directly, no call centre.</li>
+        </ul>
+      </div>
+      <div class="location-map reveal">
+        <svg viewBox="0 0 400 420" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="420" fill="#173330" />
+          <path d="M0 260 Q80 220 160 250 T320 230 T400 260 V420 H0 Z" fill="#1E3F3B" />
+          <path d="M0 300 Q100 270 200 300 T400 290 V420 H0 Z" fill="#0F1E1B" opacity="0.6" />
+          <circle cx="200" cy="200" r="6" fill="#E2C07E" />
+          <circle cx="200" cy="200" r="14" fill="none" stroke="#C6A15B" stroke-width="1" />
+          <circle cx="200" cy="200" r="26" fill="none" stroke="#C6A15B" stroke-width="0.6" opacity="0.6" />
+          <text x="200" y="240" fill="#DCD5C1" font-size="11" font-family="IBM Plex Mono, monospace"
+            text-anchor="middle" letter-spacing="2">POSITANO · SA</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#top" class="brand"><span class="mark">B</span>Hotel Belmare</a>
+          <p>A forty-two room house on the Amalfi cliffs, run by the same family since 1962.</p>
+          <div class="newsletter">
+            <input type="email" placeholder="Your email for occasional news">
+            <button type="button"
+              onclick="alert('Thank you — you will hear from us occasionally, not often.')">Subscribe</button>
+          </div>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#dining">Dining</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#location">Location</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Guest</h4>
+          <ul>
+            <li><a href="#folio">Make a reservation</a></li>
+            <li><a href="#" onclick="return false;">Manage a booking</a></li>
+            <li><a href="#" onclick="return false;">Cancellation policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>
+              <p>Via Cristoforo Colombo, 22<br>84017 Positano SA, Italy</p>
+            </li>
+            <li>
+              <p>+234 70 4126 1992</p>
+            </li>
+            <li>
+              <p>opemipogafar@gmail.com</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Hotel Belmare. All rights reserved.</span>
+        <span>A fictional property, built as a design study.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ BOOKING MODAL ============ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle">Reservation</h3>
+        <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-steps"><span id="stepBar1"></span><span id="stepBar2"></span><span id="stepBar3"></span><span
+          id="stepBar4"></span></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       DATA
+       ============================================================ */
+    const ROOMS = [
+      {
+        id: 'classic', name: 'Classic Double', type: 'Classic Double',
+        capacity: 2, bed: 'Queen bed', size: '28 m²', price: 100,
+        seed: 'belmare-room-classic',
+        image: 'images/deluxe.jfif',
+        desc: 'A stylish and comfortable room with a plush bed, modern furnishings and everything you need for a relaxing stay.',
+        tags: ['Partial sea view', 'Queen bed', '28 m²']
+      },
+      {
+        id: 'garden', name: 'Garden Junior Suite', type: 'Garden Junior Suite',
+        capacity: 3, bed: 'Queen + daybed', size: '38 m²', price: 150,
+        seed: 'belmare-room-garden',
+        image: 'images/executive.jfif',
+        desc: 'Spacious and elegant, featuring a separate seating area, premium amenities, and the perfect balance of comfort and luxury.',
+        tags: ['Terrace access', 'Queen + daybed', '38 m²']
+      },
+      {
+        id: 'terrace', name: 'Terrace Suite', type: 'Terrace Suite',
+        capacity: 2, bed: 'King bed', size: '44 m²', price: 180,
+        seed: 'belmare-room-terrace',
+        image: 'images/family.jfif',
+        desc: 'Designed for families and groups, offering genorous space, multiple sleeping arrangements, and a welcoming atmosphere.',
+        tags: ['Full sea view', 'King bed', '44 m²']
+      },
+      {
+        id: 'grand', name: 'Grand Belmare Suite', type: 'Grand Belmare Suite',
+        capacity: 4, bed: 'King + twin room', size: '68 m²', price: 240,
+        seed: 'belmare-room-grand',
+        image: 'images/president.jfif',
+        desc: 'Experience the highest level of luxury with expansive living spaces, refined decor, and exclusive amenities.',
+        tags: ['Corner terrace', 'Two rooms', '68 m²']
+      }
+    ];
+
+    const BLOCKED_RANGE = { start: '2026-08-14', end: '2026-08-19' }; // simulated sold-out window
+    const PROMO_CODES = { 'BELMARE10': 0.10 };
+
+    const TESTIMONIALS = [
+      { quote: 'The terrace suite ruined every other hotel balcony for us, permanently.', name: 'A. Novak — Terrace Suite, June stay' },
+      { quote: 'No key cards, no queue, just a ledger and someone who remembered our name from the email.', name: 'R. Sato — Garden Junior Suite' },
+      { quote: 'Breakfast changed every single morning depending on what came off the boats.', name: 'M. Odom — Grand Belmare Suite' }
+    ];
+
+    const ICONS = {
+      wifi: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12.5a11 11 0 0 1 13 0"/><path d="M9 16.5a6 6 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg>`,
+      pool: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 17c1.5 1.2 3 1.2 4.5 0s3-1.2 4.5 0 3 1.2 4.5 0 3-1.2 4.5 0"/><path d="M6 12V6a2 2 0 0 1 2-2h3v8"/><path d="M14 8h4a2 2 0 0 1 2 2v2"/></svg>`,
+      spa: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M12 3c2 3 3 5 3 7a3 3 0 1 1-6 0c0-2 1-4 3-7Z"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg>`,
+      concierge: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 19h18"/><path d="M5 19v-3a7 7 0 0 1 14 0v3"/><circle cx="12" cy="8" r="1"/></svg>`,
+      fork: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M6 2v8a2 2 0 0 0 4 0V2M8 10v12"/><path d="M17 2v7a2 2 0 0 1-2 2v11"/></svg>`,
+      car: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13"/><rect x="2" y="13" width="20" height="6" rx="1.5"/><circle cx="6.5" cy="19.5" r="1.5"/><circle cx="17.5" cy="19.5" r="1.5"/></svg>`,
+      person: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>`,
+      bed: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 14h18"/><path d="M7 10V7a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3"/><path d="M3 18v2M21 18v2"/></svg>`,
+      size: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>`,
+      check: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg>`,
+      card: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
+      bank: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 10 12 4l9 6"/><path d="M4 10v9M9 10v9M15 10v9M20 10v9"/><path d="M2 21h20"/></svg>`,
+      phone: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>`,
+      hotel: `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>`
+    };
+
+    const AMENITIES = [
+      { icon: 'pool', title: 'Cliffside pool', text: 'Saltwater, heated through October, open from sunrise.' },
+      { icon: 'spa', title: 'Spa Belmare', text: 'Two treatment rooms and a sauna built into the rock.' },
+      { icon: 'fork', title: 'Restaurant & Bar', text: 'One seating nightly, six tables, market-driven menu.' },
+      { icon: 'concierge', title: 'Concierge desk', text: 'Boat charters, hikes, and dinner reservations arranged directly.' },
+      { icon: 'wifi', title: 'Free wifi', text: 'Stay connected with high-speed internet throughout the hotel.' },
+      { icon: 'car', title: 'Free Parking', text: 'Secure and convenient parking for all guests.' }
+    ];
+
+    /* ============================================================
+       NAV SCROLL STATE
+       ============================================================ */
+    const nav = document.getElementById('siteNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ============================================================
+       REVEAL ON SCROLL
+       ============================================================ */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* ============================================================
+       RENDER ROOMS
+       ============================================================ */
+    function money(n) { return '€' + n.toLocaleString('en-US', { minimumFractionDigits: 0 }); }
+
+    function nightsBetween(a, b) {
+      const d1 = new Date(a), d2 = new Date(b);
+      return Math.round((d2 - d1) / 86400000);
+    }
+
+    function roomCardHTML(room, opts = {}) {
+      const soldOut = opts.soldOut;
+      const imgSrc = room.image ? room.image : `https://picsum.photos/seed/${room.seed}/900/700`;
+      return `
+  <div class="room-card reveal in">
+    <div class="photo"><img src="${imgSrc}" alt="${room.name} at Hotel Belmare"></div>
+    <div class="room-body">
+      <div class="room-top">
+        <h3>${room.name}</h3>
+        <div class="room-price"><span class="amount">${money(room.price)}</span><span class="per">per night</span></div>
+      </div>
+      <div class="room-tags">
+        <span>${ICONS.person} ${room.capacity} guests</span>
+        <span>${ICONS.bed} ${room.bed}</span>
+        <span>${ICONS.size} ${room.size}</span>
+      </div>
+      <p class="room-desc">${room.desc}</p>
+      <div class="room-foot">
+        <span class="room-avail ${soldOut ? 'sold' : ''}">${soldOut ? 'Not available for selected dates' : 'Available'}</span>
+        <button class="btn-ghost" ${soldOut ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : `onclick="openBooking('${room.id}')"`}>Book now</button>
+      </div>
+    </div>
+  </div>`;
+    }
+
+    function renderAllRooms() {
+      document.getElementById('roomsGrid').innerHTML = ROOMS.map(r => roomCardHTML(r)).join('');
+      document.getElementById('results-note').style.display = 'none';
+    }
+    renderAllRooms();
+
+    /* ============================================================
+       RENDER AMENITIES
+       ============================================================ */
+    document.getElementById('amenitiesGrid').innerHTML = AMENITIES.map(a => `
+  <div class="amenity">
+    <div class="icon-badge">${ICONS[a.icon]}</div>
+    <h3>${a.title}</h3>
+    <p>${a.text}</p>
+  </div>`).join('');
+
+    /* ============================================================
+       TESTIMONIAL CAROUSEL
+       ============================================================ */
+    let testiIndex = 0;
+    function renderTesti() {
+      const t = TESTIMONIALS[testiIndex];
+      document.getElementById('testiQuote').textContent = t.quote;
+      document.getElementById('testiName').textContent = t.name;
+      document.getElementById('testiDots').innerHTML = TESTIMONIALS.map((_, i) =>
+        `<button class="${i === testiIndex ? 'active' : ''}" onclick="testiIndex=${i};renderTesti()" aria-label="Testimonial ${i + 1}"></button>`).join('');
+    }
+    renderTesti();
+    setInterval(() => { testiIndex = (testiIndex + 1) % TESTIMONIALS.length; renderTesti(); }, 6000);
+
+    /* ============================================================
+       SEARCH FORM — VALIDATION + AVAILABILITY (per algorithm Steps 2–4)
+       ============================================================ */
+    const searchForm = document.getElementById('searchForm');
+    const formMsg = document.getElementById('formMsg');
+
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const checkin = document.getElementById('checkin').value;
+      const checkout = document.getElementById('checkout').value;
+      const adults = parseInt(document.getElementById('adults').value, 10);
+      const roomType = document.getElementById('roomType').value;
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+
+      formMsg.classList.remove('ok');
+
+      if (!checkin || !checkout) {
+        formMsg.textContent = 'Please select both a check-in and check-out date.';
+        return;
+      }
+      if (new Date(checkin) < today) {
+        formMsg.textContent = 'Check-in date cannot be in the past.';
+        return;
+      }
+      if (new Date(checkout) <= new Date(checkin)) {
+        formMsg.textContent = 'Check-out date must be after check-in.';
+        return;
+      }
+      const maxCapacity = Math.max(...ROOMS.map(r => r.capacity));
+      if (adults > maxCapacity) {
+        formMsg.textContent = `Our largest room holds ${maxCapacity} guests — please call reception for larger parties.`;
+        return;
+      }
+
+      formMsg.textContent = '';
+
+      // simulated availability check against a blocked window
+      const overlapsBlocked = !(checkout <= BLOCKED_RANGE.start || checkin >= BLOCKED_RANGE.end);
+      let candidates = ROOMS.filter(r => r.capacity >= adults && (!roomType || r.type === roomType));
+
+      const note = document.getElementById('results-note');
+
+      if (candidates.length === 0) {
+        note.style.display = 'block';
+        note.textContent = `No rooms match that guest count or type. Showing all rooms instead.`;
+        document.getElementById('roomsGrid').innerHTML = ROOMS.map(r => roomCardHTML(r)).join('');
+      } else if (overlapsBlocked) {
+        note.style.display = 'block';
+        note.textContent = `Those dates overlap a fully booked week (Aug 14–19). Rooms are shown, but marked unavailable — try adjusting your dates.`;
+        document.getElementById('roomsGrid').innerHTML = candidates.map(r => roomCardHTML(r, { soldOut: true })).join('');
+      } else {
+        note.style.display = 'block';
+        note.classList.add('ok');
+        const n = nightsBetween(checkin, checkout);
+        note.textContent = `${candidates.length} room${candidates.length > 1 ? 's' : ''} available for ${n} night${n > 1 ? 's' : ''}, ${adults} guest${adults > 1 ? 's' : ''}.`;
+        document.getElementById('roomsGrid').innerHTML = candidates.map(r => roomCardHTML(r)).join('');
+      }
+
+      document.getElementById('rooms').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // keep checkout min in sync with checkin
+    document.getElementById('checkin').addEventListener('change', (e) => {
+      document.getElementById('checkout').min = e.target.value;
+    });
+
+    /* ============================================================
+       BOOKING MODAL FLOW (Steps 5–8 of the algorithm)
+       ============================================================ */
+    const overlay = document.getElementById('modalOverlay');
+    const modalBody = document.getElementById('modalBody');
+    const modalTitle = document.getElementById('modalTitle');
+
+    let booking = {};
+
+    function resetBooking(room) {
+      const checkin = document.getElementById('checkin').value || new Date().toISOString().slice(0, 10);
+      let checkout = document.getElementById('checkout').value;
+      if (!checkout) {
+        const d = new Date(checkin); d.setDate(d.getDate() + 2);
+        checkout = d.toISOString().slice(0, 10);
+      }
+      const nights = Math.max(1, nightsBetween(checkin, checkout));
+      booking = {
+        room, checkin, checkout, nights,
+        guestType: 'guest', name: '', email: '', phone: '',
+        arrival: '', requests: '', promo: '', discountRate: 0,
+        payMethod: 'card', step: 1
+      };
+    }
+
+    function openBooking(roomId) {
+      const room = ROOMS.find(r => r.id === roomId);
+      resetBooking(room);
+      overlay.classList.add('open');
+      renderStep();
+    }
+
+    function closeModal() { overlay.classList.remove('open'); }
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+    function updateStepBar() {
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('stepBar' + i).classList.toggle('done', i <= booking.step);
+      }
+    }
+
+    function costBreakdown() {
+      const room = booking.room;
+      const base = room.price * booking.nights;
+      const discount = base * booking.discountRate;
+      const afterDiscount = base - discount;
+      const tax = afterDiscount * 0.125;
+      const service = afterDiscount * 0.08;
+      const total = afterDiscount + tax + service;
+      return { base, discount, tax, service, total };
+    }
+
+    function renderStep() {
+      updateStepBar();
+      const room = booking.room;
+      modalTitle.textContent = room.name + ' — ' + booking.nights + ' night' + (booking.nights > 1 ? 's' : '');
+
+      if (booking.step === 1) {
+        modalBody.innerHTML = `
+      <h4>Who's checking in?</h4>
+      <p class="muted">Sign in if you've stayed before, or continue as a guest — either way takes a minute.</p>
+      <div class="tab-row">
+        <button class="tab-btn ${booking.guestType === 'login' ? 'active' : ''}" onclick="setGuestType('login')">Returning guest</button>
+        <button class="tab-btn ${booking.guestType === 'guest' ? 'active' : ''}" onclick="setGuestType('guest')">New / guest</button>
+      </div>
+      <div id="tabContent"></div>
+      <div class="modal-actions">
+        <span></span>
+        <button class="btn-primary" onclick="goStep2()">Continue</button>
+      </div>
+    `;
+        renderTabContent();
+      }
+
+      if (booking.step === 2) {
+        modalBody.innerHTML = `
+      <h4>Booking details</h4>
+      <p class="muted">${room.name} · ${booking.checkin} → ${booking.checkout}</p>
+      <div class="form-row">
+        <div class="field">
+          <label>Estimated arrival time</label>
+          <select id="arrival">
+            <option value="">No preference</option>
+            <option value="early">Before 2 PM</option>
+            <option value="afternoon">2 – 6 PM</option>
+            <option value="evening">After 6 PM</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Promo code</label>
+          <input type="text" id="promo" placeholder="e.g. BELMARE10" value="${booking.promo}">
+        </div>
+      </div>
+      <div class="form-row full">
+        <div class="field">
+          <label>Special requests</label>
+          <textarea id="requests" placeholder="Anniversary, dietary notes, high floor, etc.">${booking.requests}</textarea>
+        </div>
+      </div>
+      <div class="summary-box" id="summaryBox"></div>
+      <div class="modal-actions">
+        <button class="link-btn" onclick="booking.step=1;renderStep()">Back</button>
+        <button class="btn-primary" onclick="goStep3()">Continue to payment</button>
+      </div>
+    `;
+        document.getElementById('promo').addEventListener('input', updateSummary);
+        updateSummary();
+      }
+
+      if (booking.step === 3) {
+        const c = costBreakdown();
+        modalBody.innerHTML = `
+      <h4>Payment</h4>
+      <p class="muted">Total due today: <strong>${money(Math.round(c.total))}</strong></p>
+      <div class="pay-methods" id="payMethods">
+        ${payMethodHTML('card', 'Credit / debit card', ICONS.card)}
+        ${payMethodHTML('bank', 'Bank transfer', ICONS.bank)}
+        ${payMethodHTML('mobile', 'Mobile payment', ICONS.phone)}
+        ${payMethodHTML('hotel', 'Pay at hotel', ICONS.hotel)}
+      </div>
+      <div id="payDetail"></div>
+      <p class="field-error" id="payError">Payment could not be processed. Please check your details and try again.</p>
+      <div class="modal-actions">
+        <button class="link-btn" onclick="booking.step=2;renderStep()">Back</button>
+        <button class="btn-primary" id="payBtn" onclick="processPayment()">Confirm and pay</button>
+      </div>
+    `;
+        renderPayDetail();
+      }
+
+      if (booking.step === 4) {
+        const ref = booking.ref || genRef();
+        booking.ref = ref;
+        const c = costBreakdown();
+        modalBody.innerHTML = `
+      <div class="confirm-badge">${ICONS.check}</div>
+      <p class="confirm-ref">${ref}</p>
+      <p class="muted" style="text-align:center;">Booking confirmed. A copy has been sent to ${booking.email || 'your email'}.</p>
+      <div class="summary-box">
+        <div class="summary-row"><span>${room.name}</span><span>${booking.nights} night${booking.nights > 1 ? 's' : ''}</span></div>
+        <div class="summary-row"><span>${booking.checkin} → ${booking.checkout}</span><span>${room.capacity} guests max</span></div>
+        <div class="summary-row"><span>Payment method</span><span>${payLabel(booking.payMethod)}</span></div>
+        <div class="summary-row total"><span>Total paid</span><span>${money(Math.round(c.total))}</span></div>
+      </div>
+      <div class="modal-actions" style="justify-content:center;">
+        <button class="btn-primary" onclick="closeModal()">Done</button>
+      </div>
+    `;
+      }
+    }
+
+    function setGuestType(type) { booking.guestType = type; renderStep(); }
+
+    function renderTabContent() {
+      const el = document.getElementById('tabContent');
+      if (booking.guestType === 'login') {
+        el.innerHTML = `
+      <div class="form-row">
+        <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="you@example.com"></div>
+        <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+      </div>
+    `;
+      } else {
+        el.innerHTML = `
+      <div class="form-row">
+        <div class="field"><label>Full name</label><input type="text" id="gName" value="${booking.name}"></div>
+        <div class="field"><label>Phone</label><input type="tel" id="gPhone" value="${booking.phone}"></div>
+      </div>
+      <div class="form-row full">
+        <div class="field"><label>Email</label><input type="email" id="gEmail" value="${booking.email}"></div>
+      </div>
+    `;
+      }
+    }
+
+    function goStep2() {
+      if (booking.guestType === 'login') {
+        const email = document.getElementById('loginEmail').value;
+        const pass = document.getElementById('loginPass').value;
+        if (!email || !pass) { flashTabError('Please enter your email and password.'); return; }
+        booking.email = email;
+      } else {
+        const name = document.getElementById('gName').value.trim();
+        const email = document.getElementById('gEmail').value.trim();
+        const phone = document.getElementById('gPhone').value.trim();
+        if (!name || !email || !phone) { flashTabError('Please fill in your name, email, and phone.'); return; }
+        booking.name = name; booking.email = email; booking.phone = phone;
+      }
+      booking.step = 2;
+      renderStep();
+    }
+
+    function flashTabError(msg) {
+      let err = document.getElementById('tabError');
+      if (!err) {
+        err = document.createElement('p');
+        err.id = 'tabError';
+        err.className = 'field-error show';
+        document.getElementById('tabContent').after(err);
+      }
+      err.textContent = msg;
+      err.classList.add('show');
+    }
+
+    function updateSummary() {
+      booking.arrival = document.getElementById('arrival').value;
+      booking.requests = document.getElementById('requests').value;
+      const promoInput = document.getElementById('promo').value.trim().toUpperCase();
+      booking.promo = promoInput;
+      booking.discountRate = PROMO_CODES[promoInput] || 0;
+      const c = costBreakdown();
+      document.getElementById('summaryBox').innerHTML = `
+    <div class="summary-row"><span>${booking.room.name} × ${booking.nights} night${booking.nights > 1 ? 's' : ''}</span><span>${money(Math.round(c.base))}</span></div>
+    ${c.discount > 0 ? `<div class="summary-row"><span>Promo (${booking.promo})</span><span>−${money(Math.round(c.discount))}</span></div>` : ''}
+    <div class="summary-row"><span>Taxes (12.5%)</span><span>${money(Math.round(c.tax))}</span></div>
+    <div class="summary-row"><span>Service charge (8%)</span><span>${money(Math.round(c.service))}</span></div>
+    <div class="summary-row total"><span>Grand total</span><span>${money(Math.round(c.total))}</span></div>
+  `;
+    }
+
+    function goStep3() {
+      booking.step = 3;
+      renderStep();
+    }
+
+    function payMethodHTML(id, label, icon) {
+      return `<div class="pay-method ${booking.payMethod === id ? 'active' : ''}" onclick="setPayMethod('${id}')">${icon}<span>${label}</span></div>`;
+    }
+    function payLabel(id) {
+      return { card: 'Credit / debit card', bank: 'Bank transfer', mobile: 'Mobile payment', hotel: 'Pay at hotel' }[id];
+    }
+    function setPayMethod(id) {
+      booking.payMethod = id;
+      document.querySelectorAll('.pay-method').forEach(el => el.classList.remove('active'));
+      renderStep();
+    }
+    function renderPayDetail() {
+      const el = document.getElementById('payDetail');
+      if (booking.payMethod === 'card') {
+        el.innerHTML = `
+      <div class="form-row">
+        <div class="field"><label>Card number</label><input type="text" id="cardNum" placeholder="4242 4242 4242 4242"></div>
+        <div class="field"><label>Expiry</label><input type="text" id="cardExp" placeholder="MM/YY"></div>
+      </div>
+    `;
+      } else if (booking.payMethod === 'bank') {
+        el.innerHTML = `<p class="muted">Transfer details will be emailed after confirmation; the booking is held for 48 hours.</p>`;
+      } else if (booking.payMethod === 'mobile') {
+        el.innerHTML = `<div class="form-row"><div class="field"><label>Mobile number</label><input type="tel" id="mobileNum" placeholder="+39 000 000 0000"></div></div>`;
+      } else {
+        el.innerHTML = `<p class="muted">No payment is taken now — settle the full amount at check-out.</p>`;
+      }
+    }
+
+    function genRef() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let s = 'BLM-';
+      for (let i = 0; i < 6; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      return s;
+    }
+
+    function processPayment() {
+      const btn = document.getElementById('payBtn');
+      const errEl = document.getElementById('payError');
+      errEl.classList.remove('show');
+
+      if (booking.payMethod === 'card') {
+        const num = document.getElementById('cardNum').value.replace(/\s/g, '');
+        if (num.length < 12) {
+          errEl.classList.add('show');
+          return;
+        }
+      }
+
+      btn.innerHTML = `<span class="spinner"></span> Processing…`;
+      btn.disabled = true;
+
+      setTimeout(() => {
+        booking.step = 4;
+        renderStep();
+      }, 1100);
+    }
+
+    // prevent past dates on load
+    document.getElementById('checkin').min = new Date().toISOString().slice(0, 10);
+  </script>
+</body>
+
+</html>
